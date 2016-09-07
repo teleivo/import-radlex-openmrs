@@ -65,3 +65,9 @@ adjust them ;)
 
 If you have suggestions/improvements please share!!
 
+## Limitations
+
+ATTENTION: still having issues with the complete radlex, guess there is a
+special character getting in the way of the awk/scripting magic. First to find
+it gets a :beer: ;)
+
