@@ -2,7 +2,9 @@
 
 [ -f import-radlex-complete.sql ] && rm import-radlex-complete.sql
 
-awk -vFPAT='[^,]*|"[^"]*"'']"' '{if (NR!=1) {print "\42" sq $1 "\42," $3 sq","sq $4 sq ");" }}' complete-playbook-2_1.csv > radlex-complete-columns.csv
+awk -vFPAT='([^,]+|"[^"]+")' \
+   '{if (NR!=1) {print "\42" $1 "\42," $3 "," $4 ");" }}' \
+   complete-playbook-2_1.csv > radlex-complete-columns.csv
 
 while read; do
     echo "INSERT concept_reference_term

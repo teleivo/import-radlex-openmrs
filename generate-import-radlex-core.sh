@@ -2,7 +2,9 @@
 
 [ -f import-radlex-core.sql ] && rm import-radlex-core.sql
 
-awk -vFPAT='[^,]*|"[^"]*"'']"' '{if (NR!=1) {print "\42" sq $1 "\42," $3 sq","sq $4 sq ");" }}' core-playbook-2_1.csv > radlex-core-columns.csv
+awk -vFPAT='([^,]+|"[^"]+")' \
+   '{if (NR!=1) {print "\42" $1 "\42," $3 "," $4 ");" }}' \
+   core-playbook-2_1.csv > radlex-core-columns.csv
 
 while read; do
     echo "INSERT concept_reference_term
