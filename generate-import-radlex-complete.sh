@@ -2,10 +2,17 @@
 
 [ -f import-radlex-complete.sql ] && rm import-radlex-complete.sql
 
-awk -vFPAT='([^,]+|"[^"]+")' \
-   '{if (NR!=1) {print "\42" $1 "\42," $3 "," $4 ");" }}' \
-   complete-playbook-2_1.csv > radlex-complete-columns.csv
+# Sanitize csv
+# remove header
+# remove all double quotes as some fields have them, some are missing them
+tail -n +2 complete-playbook-2_1.csv | tr -d '"' > complete-playbook-2_1-sanitized.csv
 
+# Extract columns and generate end of SQL insert satements
+awk -vFPAT='([^,]+|"[^"]+")' \
+   '{print "\42" $1 "\42,\42" $3 "\42,\42" $4 "\42);" }' \
+   complete-playbook-2_1-sanitized.csv > radlex-complete-columns.csv
+
+# Finalize SQL insert statements and output to file
 while read; do
     echo "INSERT concept_reference_term
     (concept_source_id,version,creator,date_created,uuid,code,name,description)
